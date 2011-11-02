@@ -38,7 +38,8 @@
          load_config/1,
          get_sys_tuple/1,
          get_target_dir/1,
-         get_target_parent_dir/1]).
+         get_target_parent_dir/1,
+         get_root_dir/1]).
 
 -include("rebar.hrl").
 
@@ -162,6 +163,21 @@ get_target_parent_dir(ReltoolConfig) ->
     case lists:reverse(tl(lists:reverse(filename:split(get_target_dir(ReltoolConfig))))) of
         [] -> ".";
         Components -> filename:join(Components)
+    end.
+
+%%
+%% Look for {sys, [{root_dir, dir()}]} in the reltool config file; if none
+%% is found, use code:root_dir().
+%%
+get_root_dir(ReltoolConfig) ->
+    {sys, SysInfo} = get_sys_tuple(ReltoolConfig),
+    case lists:keyfind(root_dir, 1, SysInfo) of
+        {root_dir, RootDir} ->
+            ?CONSOLE("+++Found root_dir~n",[]),
+            filename:absname(RootDir);
+        false ->
+            ?CONSOLE("+++Use code:root_dir()~n",[]),
+            code:root_dir()
     end.
 
 %% ===================================================================
