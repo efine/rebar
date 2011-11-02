@@ -169,10 +169,10 @@ get_target_parent_dir(ReltoolConfig) ->
 %% ===================================================================
 
 make_proplist([{_,_}=H|T], Acc) ->
-     make_proplist(T, [H|Acc]);
+    make_proplist(T, [H|Acc]);
 make_proplist([H|T], Acc) ->
-     App = element(1, H),
-     Ver = element(2, H),
-     make_proplist(T, [{App,Ver}|Acc]);
+    App = element(1, H),
+    Ver = element(2, H),
+    make_proplist(T, [{App,Ver}|Acc]);
 make_proplist([], Acc) ->
-     Acc.
+    Acc.
