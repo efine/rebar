@@ -60,6 +60,10 @@ xref(Config, _) ->
                                   [exports_not_used,
                                    undefined_function_calls]),
 
+    %% Do not fail if xref fails. This allows xref analysis to continue
+    %% when running against multiple dependencies.
+    XrefFail = rebar_config:get(Config, xref_fail_on_error, true),
+
     %% Look for exports that are unused by anything
     ExportsNoWarn =
         case lists:member(exports_not_used, XrefChecks) of
@@ -87,7 +91,7 @@ xref(Config, _) ->
         true ->
             ok;
         false ->
-            ?FAIL
+            maybe_fail(XrefFail)
     end.
 
 %% ===================================================================
@@ -199,3 +203,9 @@ find_mfa_source({M, F, A}) ->
         %% parameterized modules add new/1 and instance/1 for example.
         [] -> {Source, function_not_found}
     end.
+
+maybe_fail(true) ->
+    ?FAIL;
+maybe_fail(_) ->
+    ok.
+

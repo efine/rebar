@@ -150,3 +150,10 @@
 {xref_warnings, false}.
 %% xref checks to run
 {xref_checks, [exports_not_used, undefined_function_calls]}.
+
+%% If true, xref will not fail if an xref check fails,
+%% allowing multiple dependencies to be checked all at once.
+%% Note: If this is set to 'false', rebar xref will exit with
+%% a success code, so other means will be required to figure
+%% out if xref actually found errors.
+{xref_fail_on_error, true}. % Defaults to true if omitted.
