@@ -76,11 +76,8 @@ setup_code_path() ->
     %% and the like can work properly when generating their own
     %% documentation.
     CodePath = code:get_path(),
-    true = code:add_patha(ebin_dir()),
+    true = code:add_patha(rebar_utils:ebin_dir()),
     CodePath.
-
-ebin_dir() ->
-    filename:join(rebar_utils:get_cwd(), "ebin").
 
 -spec file_modified_since(Filename::string(),
                           SinceTime::non_neg_integer()) -> true | no_return().
